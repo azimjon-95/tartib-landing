@@ -314,7 +314,7 @@ export default function HowItWorks() {
   }, [])
 
   return (
-    <section id="howitworks" aria-label="Qanday ishlaydi" style={{
+    <section id="howitworks" aria-labelledby="howitworks-heading" style={{
       padding: isMobile ? '64px 16px 72px' : '96px 5% 112px',
       background: 'linear-gradient(180deg, #050508 0%, #070b14 40%, #050508 100%)',
       borderTop: '1px solid rgba(59,130,246,0.08)',
@@ -334,7 +334,7 @@ export default function HowItWorks() {
             <motion.span animate={{ rotate: [0, 360] }} transition={{ duration: 4, repeat: Infinity, ease: 'linear' }}>🔄</motion.span>
             Qanday ishlaydi
           </motion.div>
-          <motion.h2 initial={{ opacity: 0, y: 20 }} animate={headerInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }}
+          <motion.h2 id="howitworks-heading" initial={{ opacity: 0, y: 20 }} animate={headerInView ? { opacity: 1, y: 0 } : {}} transition={{ delay: 0.1 }}
             style={{ fontSize: isMobile ? 26 : 'clamp(28px,4.5vw,50px)', fontWeight: 900, letterSpacing: '-1.2px', lineHeight: 1.1, marginBottom: 12 }}>
             Gilam yuvish buyurtmasi{' '}
             <span style={{ background: 'linear-gradient(135deg, #3B82F6 0%, #06B6D4 50%, #8B5CF6 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text' }}>

@@ -137,7 +137,7 @@ export default function MapSection() {
   ]
 
   return (
-    <section id="map" style={{padding:'72px 0',background:'#050508',borderTop:'1px solid rgba(0,255,179,0.06)',position:'relative',overflow:'hidden'}}>
+    <section id="map" aria-labelledby="map-heading" style={{padding:'72px 0',background:'#050508',borderTop:'1px solid rgba(0,255,179,0.06)',position:'relative',overflow:'hidden'}}>
       <div style={{position:'absolute',top:'40%',left:'35%',width:500,height:400,background:'radial-gradient(ellipse,rgba(0,255,179,0.04),transparent)',filter:'blur(60px)',pointerEvents:'none'}}/>
 
       <div ref={ref} style={{maxWidth:1200,margin:'0 auto',padding:'0 20px'}}>
@@ -148,7 +148,7 @@ export default function MapSection() {
             <span style={{width:7,height:7,borderRadius:'50%',background:'#00FFB3',boxShadow:'0 0 6px #00FFB3',display:'inline-block',animation:'pulse 1.5s infinite'}}/>
             Real vaqtli kuzatuv
           </motion.div>
-          <motion.h2 initial={{opacity:0,y:18}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1}}
+          <motion.h2 id="map-heading" initial={{opacity:0,y:18}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1}}
             style={{fontSize:'clamp(22px,4vw,44px)',fontWeight:900,letterSpacing:'-1.5px',lineHeight:1.1,marginBottom:12}}>
             Shafyorlar Toshkent ko'chalari<br/>
             <span style={{background:'linear-gradient(135deg,#00FFB3,#38BDF8)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>bo'ylab harakatlanadi</span>

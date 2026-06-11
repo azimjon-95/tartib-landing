@@ -7,19 +7,23 @@ import Screenshots from './components/Screenshots'
 import FAQ from './components/FAQ'
 import DemoForm from './components/DemoForm'
 import Footer from './components/Footer'
+import SkipLink from './components/SkipLink'
 
 export default function HomePage() {
   return (
-    <main>
+    <>
+      <SkipLink />
       <Nav />
-      <Hero />
-      <MapSection />
-      <Features />
-      <HowItWorks />
-      <Screenshots />
-      <FAQ />
-      <DemoForm />
+      <main id="main-content">
+        <Hero />
+        <MapSection />
+        <Features />
+        <HowItWorks />
+        <Screenshots />
+        <FAQ />
+        <DemoForm />
+      </main>
       <Footer />
-    </main>
+    </>
   )
 }

@@ -37,7 +37,7 @@ export default function DemoForm() {
   ]
 
   return (
-    <section id="demo" aria-label="Demo olish" style={{
+    <section id="demo" aria-labelledby="demo-heading" style={{
       padding:'80px 16px',
       background:'linear-gradient(135deg,rgba(0,255,179,0.02),rgba(167,139,250,0.02))',
       borderTop:'1px solid rgba(0,255,179,0.06)',
@@ -52,7 +52,7 @@ export default function DemoForm() {
           <div style={{display:'inline-flex',alignItems:'center',gap:6,padding:'4px 14px',borderRadius:99,background:'rgba(0,255,179,0.06)',border:'1px solid rgba(0,255,179,0.18)',fontSize:11,fontWeight:600,color:'#00FFB3',marginBottom:20,letterSpacing:2,textTransform:'uppercase'}}>
             🚀 Bepul demo
           </div>
-          <h2 style={{fontSize:'clamp(24px,3.5vw,40px)',fontWeight:900,letterSpacing:'-1px',marginBottom:14,lineHeight:1.1}}>
+          <h2 id="demo-heading" style={{fontSize:'clamp(24px,3.5vw,40px)',fontWeight:900,letterSpacing:'-1px',marginBottom:14,lineHeight:1.1}}>
             Sehxingizni<br/>
             <span style={{background:'linear-gradient(135deg,#00FFB3,#A78BFA)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>
               bugun tartibga soling

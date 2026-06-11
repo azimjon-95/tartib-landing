@@ -401,7 +401,7 @@ export default function Hero() {
   }, [])
 
   return (
-    <section className="hero-section" style={{
+    <section className="hero-section" aria-labelledby="hero-heading" style={{
       minHeight: '100vh', display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       padding: '88px 5% 60px', textAlign: 'center',
@@ -438,7 +438,7 @@ export default function Hero() {
         </motion.div>
 
         {/* H1 */}
-        <motion.h1 initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.1 }}
+        <motion.h1 id="hero-heading" initial={{ opacity: 0, y: 28 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.9, delay: 0.1 }}
           className="hero-h1"
           style={{ fontSize: 'clamp(32px,6.5vw,82px)', fontWeight: 900, lineHeight: 1.08, letterSpacing: '-2px', marginBottom: 18, position: 'relative' }}>
           Gilam yuvish sehxingizni<br />

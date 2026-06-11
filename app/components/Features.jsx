@@ -42,7 +42,7 @@ function Card({ feat }) {
 export default function Features() {
   const [ref, inView] = useInView({ triggerOnce:true, threshold:0.1 })
   return (
-    <section id="features" aria-label="Imkoniyatlar" style={{padding:'80px 16px',position:'relative',zIndex:2}}>
+    <section id="features" aria-labelledby="features-heading" style={{padding:'80px 16px',position:'relative',zIndex:2}}>
       <div style={{position:'absolute',top:'30%',left:'50%',transform:'translate(-50%,-50%)',width:600,height:400,background:'radial-gradient(ellipse,rgba(0,255,179,0.03) 0%,transparent 70%)',pointerEvents:'none',filter:'blur(40px)'}}/>
       <div style={{maxWidth:1100,margin:'0 auto',position:'relative'}}>
         <motion.header ref={ref} style={{textAlign:'center',marginBottom:48}}>
@@ -50,7 +50,7 @@ export default function Features() {
             style={{display:'inline-flex',alignItems:'center',gap:6,padding:'4px 14px',borderRadius:99,background:'rgba(0,255,179,0.06)',border:'1px solid rgba(0,255,179,0.18)',fontSize:11,fontWeight:600,color:'#00FFB3',marginBottom:14,letterSpacing:2,textTransform:'uppercase'}}>
             ✦ Imkoniyatlar
           </motion.div>
-          <motion.h2 initial={{opacity:0,y:16}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1}}
+          <motion.h2 id="features-heading" initial={{opacity:0,y:16}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1}}
             style={{fontSize:'clamp(22px,4vw,44px)',fontWeight:900,marginBottom:12,letterSpacing:'-1.5px',lineHeight:1.1}}>
             Gilam yuvish biznesiga kerak<br/>
             <span style={{background:'linear-gradient(135deg,#00FFB3,#A78BFA)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>

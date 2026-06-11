@@ -7,7 +7,7 @@ export default function Footer() {
   const year = new Date().getFullYear()
 
   return (
-    <footer style={{borderTop:'1px solid rgba(0,255,179,0.06)',padding:'48px 16px 0',position:'relative',zIndex:2,background:'#050508',
+    <footer role="contentinfo" itemScope itemType="https://schema.org/Organization" style={{borderTop:'1px solid rgba(0,255,179,0.06)',padding:'48px 16px 0',position:'relative',zIndex:2,background:'#050508',
       paddingBottom:'max(24px, env(safe-area-inset-bottom, 24px))'}}>
       <div ref={ref} style={{maxWidth:1100,margin:'0 auto'}}>
         <div className="footer-grid" style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',gap:36,marginBottom:40}}>
@@ -25,8 +25,8 @@ export default function Footer() {
               O'zbekistondagi gilam yuvish va himchishtka sehxlari uchun #1 professional CRM/ERP tizimi.
             </p>
             <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-              {[['✈️ Telegram','https://t.me/tartib_crm'],['📞 Qo\'ng\'iroq','tel:+998901234567']].map(([s,href],i)=>(
-                <a key={i} href={href} style={{fontSize:12,color:'#555',padding:'8px 14px',border:'1px solid #1a1a2e',borderRadius:10,textDecoration:'none',transition:'all 0.2s',display:'flex',alignItems:'center',gap:5}}
+              {[['✈️ Telegram','https://t.me/tartib_crm','Tartib CRM Telegram'],['📞 Qo\'ng\'iroq','tel:+998901234567','Tartib CRM ga qo\'ng\'iroq']].map(([s,href,label],i)=>(
+                <a key={i} href={href} aria-label={label} rel={href.startsWith('http')?'noopener noreferrer':undefined} style={{fontSize:12,color:'#555',padding:'8px 14px',border:'1px solid #1a1a2e',borderRadius:10,textDecoration:'none',transition:'all 0.2s',display:'flex',alignItems:'center',gap:5}}
                   onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(0,255,179,0.3)';e.currentTarget.style.color='#00FFB3'}}
                   onMouseLeave={e=>{e.currentTarget.style.borderColor='#1a1a2e';e.currentTarget.style.color='#555'}}>
                   {s}

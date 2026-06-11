@@ -214,7 +214,7 @@ export default function Screenshots() {
   const s = SCREENS[active]
 
   return (
-    <section id="screenshots" aria-label="Sahifalar" style={{padding:'80px 0',background:'linear-gradient(180deg,#050508,#07091a,#050508)',position:'relative',overflow:'hidden',zIndex:2}}>
+    <section id="screenshots" aria-labelledby="screenshots-heading" style={{padding:'80px 0',background:'linear-gradient(180deg,#050508,#07091a,#050508)',position:'relative',overflow:'hidden',zIndex:2}}>
       <div style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',width:600,height:400,background:'radial-gradient(ellipse,rgba(0,255,179,0.03),transparent)',pointerEvents:'none'}}/>
 
       <div ref={ref} style={{maxWidth:1100,margin:'0 auto',padding:'0 16px'}}>
@@ -222,7 +222,7 @@ export default function Screenshots() {
           <div style={{display:'inline-flex',alignItems:'center',gap:6,padding:'4px 14px',borderRadius:99,background:'rgba(0,255,179,0.06)',border:'1px solid rgba(0,255,179,0.18)',fontSize:11,fontWeight:600,color:'#00FFB3',marginBottom:16,letterSpacing:2,textTransform:'uppercase'}}>
             ◈ Tizim sahifalari
           </div>
-          <h2 style={{fontSize:'clamp(22px,4vw,44px)',fontWeight:900,letterSpacing:'-1.5px',lineHeight:1.1,marginBottom:12}}>
+          <h2 id="screenshots-heading" style={{fontSize:'clamp(22px,4vw,44px)',fontWeight:900,letterSpacing:'-1.5px',lineHeight:1.1,marginBottom:12}}>
             Har bir sahifa maqsadga<br/>
             <span style={{background:'linear-gradient(135deg,#00FFB3,#A78BFA)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>
               mo'ljallangan

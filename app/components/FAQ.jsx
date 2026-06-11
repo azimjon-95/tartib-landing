@@ -17,14 +17,14 @@ export default function FAQ() {
   const [ref, inView] = useInView({ triggerOnce:true, threshold:0.1 })
 
   return (
-    <section id="faq" style={{padding:'96px 5%',background:'#050508',borderTop:'1px solid rgba(0,255,179,0.06)',position:'relative',zIndex:2}}>
+    <section id="faq" aria-labelledby="faq-heading" style={{padding:'96px 5%',background:'#050508',borderTop:'1px solid rgba(0,255,179,0.06)',position:'relative',zIndex:2}}>
       <div ref={ref} style={{maxWidth:760,margin:'0 auto'}}>
         <div style={{textAlign:'center',marginBottom:52}}>
           <motion.div initial={{opacity:0,y:18}} animate={inView?{opacity:1,y:0}:{}}
             style={{display:'inline-flex',alignItems:'center',gap:6,padding:'4px 14px',borderRadius:99,background:'rgba(0,255,179,0.06)',border:'1px solid rgba(0,255,179,0.18)',fontSize:11,fontWeight:600,color:'#00FFB3',marginBottom:16,letterSpacing:2,textTransform:'uppercase'}}>
             △ Savollar
           </motion.div>
-          <motion.h2 initial={{opacity:0,y:18}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1}}
+          <motion.h2 id="faq-heading" initial={{opacity:0,y:18}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1}}
             style={{fontSize:'clamp(26px,4vw,44px)',fontWeight:900,letterSpacing:'-1.5px',lineHeight:1.1}}>
             Ko'p so'raladigan<br/>
             <span style={{background:'linear-gradient(135deg,#00FFB3,#A78BFA)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>savollar</span>
