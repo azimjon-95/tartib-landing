@@ -73,7 +73,7 @@ export default function Nav() {
         </nav>
 
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-          <a href="#" className="nav-desk" style={{ color: '#666', fontSize: 14, textDecoration: 'none' }}>Kirish</a>
+          <a href="https://app.tartibcrm.uz" rel="noopener" className="nav-desk" style={{ color: '#666', fontSize: 14, textDecoration: 'none' }}>Kirish</a>
           <motion.a href="#demo" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
             className="nav-cta-desk"
             style={{ padding: '9px 20px', background: 'linear-gradient(135deg,#00FFB3,#00cc8e)', color: '#000', borderRadius: 10, fontSize: 14, fontWeight: 700, textDecoration: 'none' }}>

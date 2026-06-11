@@ -8,10 +8,12 @@ import FAQ from './components/FAQ'
 import DemoForm from './components/DemoForm'
 import Footer from './components/Footer'
 import SkipLink from './components/SkipLink'
+import ServiceWorker from './components/ServiceWorker'
 
 export default function HomePage() {
   return (
     <>
+      <ServiceWorker />
       <SkipLink />
       <Nav />
       <main id="main-content">
