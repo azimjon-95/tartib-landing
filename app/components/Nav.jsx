@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import Logo from './Logo'
 
 const LINKS = [
   { label: 'Imkoniyatlar', id: 'features' },
@@ -21,6 +20,12 @@ export default function Nav() {
     return () => window.removeEventListener('scroll', fn)
   }, [])
 
+  // lock body scroll when menu open
+  useEffect(() => {
+    document.body.style.overflow = mob ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [mob])
+
   return (
     <>
       <motion.nav
@@ -29,100 +34,140 @@ export default function Nav() {
         transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
         style={{
           position: 'fixed', top: 0, left: 0, right: 0, zIndex: 1000,
-          padding: '0 5%', height: 64,
+          padding: '0 20px', height: 60,
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          background: scrolled ? 'rgba(5,5,8,0.95)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(24px)' : 'none',
-          borderBottom: scrolled ? '1px solid rgba(0,255,179,0.08)' : 'none',
-          transition: 'all 0.4s',
+          background: scrolled || mob ? 'rgba(5,5,8,0.97)' : 'transparent',
+          backdropFilter: scrolled || mob ? 'blur(24px)' : 'none',
+          borderBottom: scrolled || mob ? '1px solid rgba(0,255,179,0.08)' : 'none',
+          transition: 'all 0.3s',
+          /* safe area for iPhone notch */
+          paddingTop: 'max(0px, env(safe-area-inset-top))',
         }}>
 
-        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
+        <a href="/" style={{ display: 'flex', alignItems: 'center', gap: 9, flexShrink: 0, textDecoration: 'none' }}>
           <div style={{
-            width: 34, height: 34, borderRadius: 9,
+            width: 32, height: 32, borderRadius: 9,
             background: 'linear-gradient(135deg,#00FFB3,#A78BFA)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontWeight: 900, fontSize: 17, color: '#000',
+            fontWeight: 900, fontSize: 16, color: '#000', flexShrink: 0,
           }}>T</div>
           <div>
-            <div style={{ fontSize: 16, fontWeight: 800, color: '#f1f5f9', letterSpacing: '-0.3px' }}>
+            <div style={{ fontSize: 15, fontWeight: 800, color: '#f1f5f9', letterSpacing: '-0.3px', lineHeight: 1.2 }}>
               Tartib<span style={{ color: '#00FFB3' }}>CRM</span>
             </div>
-            <div style={{ fontSize: 8, color: '#00FFB3', letterSpacing: '1.5px', textTransform: 'uppercase', opacity: 0.7 }}>
+            <div style={{ fontSize: 7, color: '#00FFB3', letterSpacing: '1.5px', textTransform: 'uppercase', opacity: 0.7 }}>
               Gilam yuvish ERP
             </div>
           </div>
         </a>
 
-        <nav style={{ display: 'flex', alignItems: 'center', gap: 30 }} className="nav-desk">
+        {/* Desktop nav */}
+        <nav style={{ display: 'flex', alignItems: 'center', gap: 28 }} className="nav-desk">
           {LINKS.map(l => (
-            <a key={l.id} href={`#${l.id}`} style={{
-              color: '#666', fontSize: 14, fontWeight: 500,
-              textDecoration: 'none', transition: 'color 0.2s',
-            }}
+            <a key={l.id} href={`#${l.id}`} style={{ color: '#666', fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
               onMouseEnter={e => e.target.style.color = '#00FFB3'}
-              onMouseLeave={e => e.target.style.color = '#666'}
-            >{l.label}</a>
+              onMouseLeave={e => e.target.style.color = '#666'}>
+              {l.label}
+            </a>
           ))}
         </nav>
 
-        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <a href="#" className="nav-desk" style={{ color: '#666', fontSize: 14, textDecoration: 'none' }}>Kirish</a>
-          <motion.a href="#demo"
-            whileHover={{ scale: 1.04, boxShadow: '0 0 24px rgba(0,255,179,0.4)' }}
-            whileTap={{ scale: 0.97 }}
+          <motion.a href="#demo" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
             className="nav-cta-desk"
-            style={{
-              padding: '9px 22px',
-              background: 'linear-gradient(135deg,#00FFB3,#00cc8e)',
-              color: '#000', borderRadius: 10, fontSize: 14, fontWeight: 700,
-              boxShadow: '0 4px 16px rgba(0,255,179,0.25)',
-            }}>
+            style={{ padding: '9px 20px', background: 'linear-gradient(135deg,#00FFB3,#00cc8e)', color: '#000', borderRadius: 10, fontSize: 14, fontWeight: 700, textDecoration: 'none' }}>
             Bepul demo →
           </motion.a>
 
-          <motion.button whileTap={{ scale: 0.9 }} onClick={() => setMob(v => !v)}
+          {/* Mobile: demo button + hamburger */}
+          <motion.a href="#demo" whileTap={{ scale: 0.94 }}
             className="nav-mob-btn"
             style={{
-              display: 'none', background: 'rgba(0,255,179,0.08)',
-              border: '1px solid rgba(0,255,179,0.2)', color: '#00FFB3',
-              cursor: 'pointer', padding: '7px 10px', borderRadius: 8, fontSize: 18,
+              display: 'none', padding: '8px 14px',
+              background: 'linear-gradient(135deg,#00FFB3,#00cc8e)',
+              color: '#000', borderRadius: 8, fontSize: 13, fontWeight: 700,
+              textDecoration: 'none', whiteSpace: 'nowrap',
+            }}>
+            Demo
+          </motion.a>
+
+          <motion.button whileTap={{ scale: 0.88 }} onClick={() => setMob(v => !v)}
+            className="nav-mob-btn"
+            aria-label="Menu"
+            style={{
+              display: 'none',
+              width: 38, height: 38,
+              background: mob ? 'rgba(0,255,179,0.12)' : 'rgba(255,255,255,0.05)',
+              border: '1px solid rgba(0,255,179,0.2)',
+              color: '#00FFB3', cursor: 'pointer',
+              borderRadius: 10, fontSize: 17,
+              alignItems: 'center', justifyContent: 'center',
+              flexShrink: 0,
             }}>
             {mob ? '✕' : '☰'}
           </motion.button>
         </div>
       </motion.nav>
 
+      {/* Mobile fullscreen menu */}
       <AnimatePresence>
         {mob && (
           <motion.div
-            initial={{ opacity: 0, y: -8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }}
+            initial={{ opacity: 0, y: -12 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.22 }}
             style={{
-              position: 'fixed', top: 64, left: 0, right: 0, zIndex: 999,
-              background: 'rgba(5,5,8,0.98)', backdropFilter: 'blur(20px)',
-              borderBottom: '1px solid rgba(0,255,179,0.1)',
-              padding: '20px 5% 24px', display: 'flex', flexDirection: 'column', gap: 4,
+              position: 'fixed', top: 60, left: 0, right: 0, bottom: 0, zIndex: 998,
+              background: 'rgba(5,5,8,0.99)', backdropFilter: 'blur(24px)',
+              display: 'flex', flexDirection: 'column',
+              paddingBottom: 'env(safe-area-inset-bottom, 20px)',
             }}>
-            {LINKS.map(l => (
-              <a key={l.id} href={`#${l.id}`} onClick={() => setMob(false)} style={{
-                color: '#e2e8f0', fontSize: 16, fontWeight: 500, padding: '12px 0',
-                borderBottom: '1px solid rgba(0,255,179,0.06)', textDecoration: 'none',
-              }}>{l.label}</a>
-            ))}
-            <a href="#demo" onClick={() => setMob(false)} style={{
-              marginTop: 12, padding: 13,
-              background: 'linear-gradient(135deg,#00FFB3,#00cc8e)',
-              color: '#000', borderRadius: 10, fontSize: 15, fontWeight: 700,
-              textAlign: 'center', textDecoration: 'none',
-            }}>🚀 Bepul demo olish</a>
+            <div style={{ flex: 1, padding: '12px 20px 0', overflowY: 'auto' }}>
+              {LINKS.map((l, i) => (
+                <motion.a
+                  key={l.id} href={`#${l.id}`}
+                  onClick={() => setMob(false)}
+                  initial={{ opacity: 0, x: -16 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: i * 0.05 }}
+                  style={{
+                    display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    color: '#e2e8f0', fontSize: 17, fontWeight: 600,
+                    padding: '16px 0',
+                    borderBottom: '1px solid rgba(255,255,255,0.05)',
+                    textDecoration: 'none',
+                  }}>
+                  {l.label}
+                  <span style={{ color: '#00FFB3', fontSize: 14 }}>→</span>
+                </motion.a>
+              ))}
+            </div>
+
+            <div style={{ padding: '20px' }}>
+              <a href="#demo" onClick={() => setMob(false)} style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                padding: '16px', width: '100%',
+                background: 'linear-gradient(135deg,#00FFB3,#00cc8e)',
+                color: '#000', borderRadius: 14, fontSize: 16, fontWeight: 800,
+                textDecoration: 'none',
+                boxShadow: '0 8px 24px rgba(0,255,179,0.3)',
+              }}>
+                🚀 Bepul demo olish
+              </a>
+              <div style={{ textAlign: 'center', marginTop: 14, fontSize: 12, color: '#333' }}>
+                Karta talab yo'q · 14 kun bepul
+              </div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       <style>{`
-        @media(max-width:768px){
-          .nav-desk,.nav-cta-desk{display:none!important}
-          .nav-mob-btn{display:flex!important}
+        @media (max-width: 768px) {
+          .nav-desk, .nav-cta-desk { display: none !important }
+          .nav-mob-btn { display: flex !important }
         }
       `}</style>
     </>
