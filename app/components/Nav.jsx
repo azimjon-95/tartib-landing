@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const LINKS = [
+  { label: 'Blog', href: '/blog' },
   { label: 'Imkoniyatlar', id: 'features' },
   { label: 'Qanday ishlaydi', id: 'howitworks' },
   { label: 'Xarita', id: 'map' },
@@ -64,7 +65,7 @@ export default function Nav() {
         {/* Desktop nav */}
         <nav style={{ display: 'flex', alignItems: 'center', gap: 28 }} className="nav-desk">
           {LINKS.map(l => (
-            <a key={l.id} href={`#${l.id}`} style={{ color: '#666', fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
+            <a key={l.label} href={l.href || `#${l.id}`} style={{ color: '#666', fontSize: 14, fontWeight: 500, textDecoration: 'none', transition: 'color 0.2s' }}
               onMouseEnter={e => e.target.style.color = '#00FFB3'}
               onMouseLeave={e => e.target.style.color = '#666'}>
               {l.label}
@@ -127,7 +128,7 @@ export default function Nav() {
             <div style={{ flex: 1, padding: '12px 20px 0', overflowY: 'auto' }}>
               {LINKS.map((l, i) => (
                 <motion.a
-                  key={l.id} href={`#${l.id}`}
+                  key={l.label} href={l.href || `#${l.id}`}
                   onClick={() => setMob(false)}
                   initial={{ opacity: 0, x: -16 }}
                   animate={{ opacity: 1, x: 0 }}

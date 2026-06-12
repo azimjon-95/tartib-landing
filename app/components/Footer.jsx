@@ -2,13 +2,36 @@
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
 
+const FOOTER_LINKS = {
+  'Mahsulot': [
+    { label: 'Dashboard',    href: '/#screenshots' },
+    { label: 'Buyurtmalar', href: '/#screenshots' },
+    { label: 'Transport',   href: '/#map' },
+    { label: 'Moliya',      href: '/#screenshots' },
+    { label: 'Maosh',       href: '/#features' },
+  ],
+  'Kompaniya': [
+    { label: "Haqimizda",    href: '/' },
+    { label: 'Blog',         href: '/blog' },
+    { label: "Ish o'rinlari",href: '/' },
+    { label: 'Yangiliklar',  href: '/blog' },
+  ],
+  'Yordam': [
+    { label: 'Hujjatlar',      href: '/' },
+    { label: 'FAQ',            href: '/#faq' },
+    { label: 'Texnik yordam',  href: 'https://t.me/tartib_crm', rel: 'noopener noreferrer' },
+    { label: 'Shartlar',       href: '/' },
+  ],
+}
+
 export default function Footer() {
   const [ref, inView] = useInView({ triggerOnce:true, threshold:0.1 })
   const year = new Date().getFullYear()
 
   return (
-    <footer role="contentinfo" itemScope itemType="https://schema.org/Organization" style={{borderTop:'1px solid rgba(0,255,179,0.06)',padding:'48px 16px 0',position:'relative',zIndex:2,background:'#050508',
-      paddingBottom:'max(24px, env(safe-area-inset-bottom, 24px))'}}>
+    <footer role="contentinfo" itemScope itemType="https://schema.org/Organization"
+      style={{borderTop:'1px solid rgba(0,255,179,0.06)',padding:'48px 16px 0',position:'relative',zIndex:2,background:'#050508',
+        paddingBottom:'max(24px, env(safe-area-inset-bottom, 24px))'}}>
       <div ref={ref} style={{maxWidth:1100,margin:'0 auto'}}>
         <div className="footer-grid" style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',gap:36,marginBottom:40}}>
 
@@ -25,8 +48,13 @@ export default function Footer() {
               O'zbekistondagi gilam yuvish va himchishtka sehxlari uchun #1 professional CRM/ERP tizimi.
             </p>
             <div style={{display:'flex',gap:10,flexWrap:'wrap'}}>
-              {[['✈️ Telegram','https://t.me/tartib_crm','Tartib CRM Telegram'],['📞 Qo\'ng\'iroq','tel:+998901234567','Tartib CRM ga qo\'ng\'iroq']].map(([s,href,label],i)=>(
-                <a key={i} href={href} aria-label={label} rel={href.startsWith('http')?'noopener noreferrer':undefined} style={{fontSize:12,color:'#555',padding:'8px 14px',border:'1px solid #1a1a2e',borderRadius:10,textDecoration:'none',transition:'all 0.2s',display:'flex',alignItems:'center',gap:5}}
+              {[
+                ['✈️ Telegram','https://t.me/tartib_crm','Tartib CRM Telegram'],
+                ['📞 Qo\'ng\'iroq','tel:+998901234567','Tartib CRM ga qo\'ng\'iroq'],
+              ].map(([s,href,label],i)=>(
+                <a key={i} href={href} aria-label={label}
+                  rel={href.startsWith('http')?'noopener noreferrer':undefined}
+                  style={{fontSize:12,color:'#555',padding:'8px 14px',border:'1px solid #1a1a2e',borderRadius:10,textDecoration:'none',transition:'all 0.2s',display:'flex',alignItems:'center',gap:5}}
                   onMouseEnter={e=>{e.currentTarget.style.borderColor='rgba(0,255,179,0.3)';e.currentTarget.style.color='#00FFB3'}}
                   onMouseLeave={e=>{e.currentTarget.style.borderColor='#1a1a2e';e.currentTarget.style.color='#555'}}>
                   {s}
@@ -35,17 +63,14 @@ export default function Footer() {
             </div>
           </motion.div>
 
-          {[
-            { title:'Mahsulot',  links:['Dashboard','Buyurtmalar','Transport','Moliya','Maosh'] },
-            { title:'Kompaniya', links:["Haqimizda",'Blog',"Ish o'rinlari",'Yangiliklar'] },
-            { title:'Yordam',    links:['Hujjatlar','FAQ','Texnik yordam','Shartlar'] },
-          ].map((col,i) => (
-            <motion.div key={col.title} initial={{opacity:0,y:16}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1*(i+1)}}>
-              <div style={{fontSize:10,fontWeight:700,color:'#00FFB3',letterSpacing:2,textTransform:'uppercase',marginBottom:14}}>{col.title}</div>
-              {col.links.map(l=>(
-                <a key={l} href="#" style={{display:'block',fontSize:13,color:'#444',marginBottom:10,textDecoration:'none',transition:'color 0.2s',padding:'2px 0'}}
+          {Object.entries(FOOTER_LINKS).map(([title, links], i) => (
+            <motion.div key={title} initial={{opacity:0,y:16}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1*(i+1)}}>
+              <div style={{fontSize:10,fontWeight:700,color:'#00FFB3',letterSpacing:2,textTransform:'uppercase',marginBottom:14}}>{title}</div>
+              {links.map(l=>(
+                <a key={l.label} href={l.href} rel={l.rel}
+                  style={{display:'block',fontSize:13,color:'#444',marginBottom:10,textDecoration:'none',transition:'color 0.2s',padding:'2px 0'}}
                   onMouseEnter={e=>e.target.style.color='#f1f5f9'}
-                  onMouseLeave={e=>e.target.style.color='#444'}>{l}</a>
+                  onMouseLeave={e=>e.target.style.color='#444'}>{l.label}</a>
               ))}
             </motion.div>
           ))}

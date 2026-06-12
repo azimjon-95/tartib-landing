@@ -1,15 +1,29 @@
+import { POSTS } from './blog/posts'
+
 export default function sitemap() {
   const base = 'https://tartibcrm.uz'
-  const now = new Date()
 
-  return [
+  const staticPages = [
     {
       url: base,
-      lastModified: now,
+      lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1.0,
     },
-    // Anchor linklar sitemap ga kirmaydi — Google indexlamaydi
-    // Alohida sahifalar bo'lganda qo'shiladi
+    {
+      url: `${base}/blog`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.9,
+    },
   ]
+
+  const blogPages = POSTS.map(post => ({
+    url: `${base}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    changeFrequency: 'monthly',
+    priority: 0.8,
+  }))
+
+  return [...staticPages, ...blogPages]
 }
