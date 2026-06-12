@@ -4,7 +4,7 @@ import { useInView } from 'react-intersection-observer'
 
 const FEATS = [
   { icon:'◈', title:'Buyurtmalar boshqaruvi', text:"7 bosqichli Kanban. Gilam qabul qilinishidan topshirilishigacha real vaqtda kuzatiladi.", color:'#00FFB3', delay:0 },
-  { icon:'◎', title:'Transport & GPS xarita',  text:"Shafyorlar Toshkent ko'chalari bo'ylab real vaqtda harakatlanadi. Buyurtmalar kartada.", color:'#38BDF8', delay:0.06 },
+  { icon:'◎', title:'Transport & GPS xarita',  text:"Shafyorlar O'zbekiston bo'ylab real vaqtda harakatlanadi. Har shahar, har tuman — kartada.", color:'#38BDF8', delay:0.06 },
   { icon:'⬟', title:'Ishchilar va maosh',      text:"Kv.m bo'yicha avtomatik hisoblash. Avans, oylik, jarima, bonus — to'liq nazorat.", color:'#A78BFA', delay:0.12 },
   { icon:'⬡', title:'Moliya nazorati',         text:"Kirim, chiqim, foyda. Oylik PDF va Excel hisobotlar. Qarzdor mijozlar ro'yxati.", color:'#FB923C', delay:0.18 },
   { icon:'△', title:'Telegram Bot',            text:"Shafyorga buyurtma, mijozga holat — avtomatik xabar. Davomat bot orqali.", color:'#4ADE80', delay:0.24 },

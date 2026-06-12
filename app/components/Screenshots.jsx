@@ -46,7 +46,7 @@ const SCREENS = {
   delivery: {
     color:'#38BDF8',
     title:"Yetkazib berish — real vaqt xarita",
-    desc:"Shafyorlar Toshkent ko'chalari bo'ylab harakatlanadi. Har buyurtma real vaqtda kuzatiladi.",
+    desc:"Shafyorlar O'zbekiston bo'ylab harakatlanadi. Har shahar va tumanda real vaqt kuzatuv.",
     drivers:[
       {name:'Sardor M.',  order:'#1042', status:"Yo'lda",    color:'#00FFB3', pct:65},
       {name:'Javlon K.',  order:'#1034', status:'Yetkazdi',  color:'#4ADE80', pct:100},

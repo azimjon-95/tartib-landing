@@ -150,12 +150,12 @@ export default function MapSection() {
           </motion.div>
           <motion.h2 id="map-heading" initial={{opacity:0,y:18}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1}}
             style={{fontSize:'clamp(22px,4vw,44px)',fontWeight:900,letterSpacing:'-1.5px',lineHeight:1.1,marginBottom:12}}>
-            Shafyorlar Toshkent ko'chalari<br/>
+            Shafyorlar O'zbekiston bo'ylab<br/>
             <span style={{background:'linear-gradient(135deg,#00FFB3,#38BDF8)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>bo'ylab harakatlanadi</span>
           </motion.h2>
           <motion.p initial={{opacity:0}} animate={inView?{opacity:1}:{}} transition={{delay:0.2}}
             style={{fontSize:15,color:'#555',maxWidth:460,margin:'0 auto',lineHeight:1.7}}>
-            Har bir mashina faqat ko'cha bo'ylab — admin panelda real nazorat
+            Har bir sehx — har bir shahar. Admin panelda real vaqt nazorat
           </motion.p>
         </div>
 
@@ -170,7 +170,7 @@ export default function MapSection() {
             <div style={{padding:'10px 16px',borderBottom:'1px solid rgba(0,255,179,0.07)',display:'flex',alignItems:'center',justifyContent:'space-between',background:'rgba(5,8,16,0.8)'}}>
               <div style={{display:'flex',alignItems:'center',gap:8}}>
                 <div style={{width:7,height:7,borderRadius:'50%',background:'#4ADE80',boxShadow:'0 0 6px #4ADE80',animation:'pulse 1.5s infinite'}}/>
-                <span style={{fontSize:12,fontWeight:700,color:'#f1f5f9'}}>Live · Toshkent</span>
+                <span style={{fontSize:12,fontWeight:700,color:'#f1f5f9'}}>Live · O'zbekiston</span>
               </div>
               <div style={{display:'flex',gap:6}}>
                 {['+','−'].map(s=>(
