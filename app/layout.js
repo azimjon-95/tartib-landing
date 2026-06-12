@@ -62,7 +62,7 @@ export const metadata = {
     description: "Buyurtmalar, shafyorlar, ishchilar, maosh va moliya — barchasini bitta tizimda boshqaring. 14 kun bepul sinov, karta shart emas.",
     siteName: 'Tartib CRM',
     images: [{
-      url: '/opengraph-image?v=2',
+      url: '/og-banner.png',
       width: 1200,
       height: 630,
       alt: "Tartib CRM — O'zbekiston №1 Gilam Yuvish ERP Dashboard",
@@ -74,7 +74,7 @@ export const metadata = {
     card: 'summary_large_image',
     title: "Tartib CRM — Gilam Yuvish Sehxi uchun #1 ERP",
     description: "Buyurtmalar, shafyorlar, maosh va moliya — bitta tizimda. 14 kun bepul.",
-    images: ['/opengraph-image?v=2'],
+    images: ['/og-banner.png'],
   },
 
   // Robots
