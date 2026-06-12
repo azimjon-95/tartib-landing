@@ -150,7 +150,7 @@ export default function MapSection() {
           </motion.div>
           <motion.h2 id="map-heading" initial={{opacity:0,y:18}} animate={inView?{opacity:1,y:0}:{}} transition={{delay:0.1}}
             style={{fontSize:'clamp(22px,4vw,44px)',fontWeight:900,letterSpacing:'-1.5px',lineHeight:1.1,marginBottom:12}}>
-            Shafyorlar O'zbekiston bo'ylab<br/>
+            Shafyorlar O'zbekiston<br/>
             <span style={{background:'linear-gradient(135deg,#00FFB3,#38BDF8)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>bo'ylab harakatlanadi</span>
           </motion.h2>
           <motion.p initial={{opacity:0}} animate={inView?{opacity:1}:{}} transition={{delay:0.2}}
