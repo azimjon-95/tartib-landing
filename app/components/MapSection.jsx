@@ -180,7 +180,7 @@ export default function MapSection() {
             </div>
 
             {/* SVG map — scrollable on mobile */}
-            <div style={{overflowX:'auto',WebkitOverflowScrolling:'touch',cursor:'grab'}}>
+            <div className="map-svg-wrap" style={{overflowX:'auto',WebkitOverflowScrolling:'touch',cursor:'grab',width:'100%'}}>
               <svg width="100%" viewBox={`0 0 ${W} ${H}`} style={{display:'block',minWidth:320}}>
                 {/* Base */}
                 <rect width={W} height={H} fill="#070d1c"/>

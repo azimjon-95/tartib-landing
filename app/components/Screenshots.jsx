@@ -537,7 +537,7 @@ export default function Screenshots() {
             {/* ── DESKTOP: Browser/Laptop mockup ── */}
             {!isMobile && (
               <div style={{
-                width:'100%', maxWidth:960, margin:'0 auto',
+                width:'100%', maxWidth:960, margin:'0 auto', className:'browser-mockup',
                 borderRadius:16, overflow:'hidden',
                 border:'1px solid rgba(0,255,179,0.12)',
                 boxShadow:`0 32px 80px rgba(0,0,0,0.6), 0 0 60px ${s.color}08`,

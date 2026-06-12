@@ -1,21 +1,30 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
 }
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;        /* ← kritik */
+  max-width: 100%;
 }
 
 body {
   background: #050508;
   color: #f1f5f9;
   font-family: Inter, -apple-system, 'Segoe UI', sans-serif;
-  overflow-x: hidden;
+  overflow-x: hidden;        /* ← kritik */
+  max-width: 100%;
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
+  position: relative;
+}
+
+/* Hamma element 100% dan oshmasin */
+img, video, canvas, svg {
+  max-width: 100%;
 }
 
 ::-webkit-scrollbar { width: 4px }
@@ -44,22 +53,33 @@ body {
 @keyframes pulse   { 0%,100%{opacity:1} 50%{opacity:.4} }
 @keyframes floatY  { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
 
-/* ─── SAFE AREA (notch/home indicator) ─── */
+/* ─── SAFE AREA ─── */
 .safe-top    { padding-top: env(safe-area-inset-top, 0px) }
 .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 16px) }
 
-/* ─── TOUCH TARGETS ─── */
+/* ─── TOUCH ─── */
 button, a { touch-action: manipulation }
 
-/* ════════════════════════════════
-   MOBILE  ≤ 768px
-════════════════════════════════ */
+/* Blog hover */
+.blog-featured:hover { border-color: rgba(0,255,179,0.35) !important; transform: translateY(-2px) !important; }
+.blog-card:hover     { border-color: rgba(0,255,179,0.25) !important; transform: translateY(-3px) !important; }
+.blog-related:hover  { border-color: rgba(0,255,179,0.25) !important; }
+.blog-featured, .blog-card, .blog-related { transition: border-color 0.2s, transform 0.2s !important; }
+
+/* ════════════════
+   MOBILE ≤ 768px
+════════════════ */
 @media (max-width: 768px) {
 
-  /* sections */
+  /* Global overflow fix */
+  section, div, article, main {
+    max-width: 100%;
+  }
+
   section {
     padding-left: 16px !important;
     padding-right: 16px !important;
+    overflow-x: hidden !important;
   }
 
   /* Nav */
@@ -68,36 +88,35 @@ button, a { touch-action: manipulation }
 
   /* Hero */
   .hero-section {
-    padding: 80px 16px 48px !important;
-    min-height: auto !important;
+    padding: 76px 16px 40px !important;
     text-align: center !important;
   }
-  .hero-h1 {
-    font-size: clamp(28px, 8vw, 40px) !important;
-    letter-spacing: -1px !important;
-    line-height: 1.15 !important;
-  }
-  .hero-sub { font-size: 14px !important; }
   .hero-cta {
     flex-direction: column !important;
     gap: 10px !important;
+    max-width: 100% !important;
+  }
+  .hero-cta a {
+    flex: none !important;
     width: 100% !important;
   }
-  .hero-cta a, .hero-cta button {
-    width: 100% !important;
-    text-align: center !important;
-    justify-content: center !important;
-    padding: 14px 20px !important;
-    font-size: 15px !important;
+  .hero-badges {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 6px !important;
   }
-  .hero-badges { gap: 8px !important; flex-wrap: wrap !important; justify-content: center !important; }
-  .hero-stats  { gap: 24px !important; flex-wrap: wrap !important; margin-top: 40px !important; }
-  .hero-stat-val { font-size: 26px !important; }
+  .hero-stats { margin-top: 32px !important; gap: 20px !important; }
   .mac-section { display: none !important }
 
   /* Map */
   .map-layout4 { grid-template-columns: 1fr !important; }
-  .map-svg-wrap { overflow-x: auto !important; -webkit-overflow-scrolling: touch !important; }
+  .map-svg-wrap {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    width: 100% !important;
+  }
+  /* SVG o'zi uchun minWidth olib tashlash */
+  .map-svg-wrap svg { min-width: 0 !important; }
 
   /* Features */
   .features-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
@@ -105,20 +124,24 @@ button, a { touch-action: manipulation }
   /* HowItWorks */
   .hiw-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
   .hiw-tube-col { display: none !important; }
-  .hiw-right-col { margin-top: 0 !important; }
-  .hiw-spacer { display: none !important; }
 
   /* Screenshots */
   .screenshots-tabs {
     overflow-x: auto !important;
     -webkit-overflow-scrolling: touch !important;
-    scroll-snap-type: x mandatory !important;
+    flex-wrap: nowrap !important;
     gap: 8px !important;
     padding-bottom: 4px !important;
-    flex-wrap: nowrap !important;
   }
-  .screenshots-tab { scroll-snap-align: start !important; flex-shrink: 0 !important; white-space: nowrap !important; }
-  .screenshots-preview { font-size: 10px !important; }
+  .screenshots-tab {
+    flex-shrink: 0 !important;
+    white-space: nowrap !important;
+  }
+  /* Browser mockup mobile da kichraytiriladi */
+  .browser-mockup {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+  }
 
   /* Demo form */
   .demo-grid { grid-template-columns: 1fr !important; }
@@ -132,23 +155,20 @@ button, a { touch-action: manipulation }
   /* Footer */
   .footer-grid {
     grid-template-columns: 1fr 1fr !important;
-    gap: 28px !important;
+    gap: 24px !important;
   }
   .footer-brand { grid-column: 1 / -1 !important; }
-  .footer-bottom { flex-direction: column !important; align-items: flex-start !important; gap: 8px !important; }
+  .footer-bottom {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px !important;
+  }
 }
 
-/* ════════════════════════════════
-   SMALL MOBILE  ≤ 480px
-════════════════════════════════ */
+/* ════════════════
+   SMALL ≤ 480px
+════════════════ */
 @media (max-width: 480px) {
-  h2 { font-size: 22px !important; }
   .footer-grid { grid-template-columns: 1fr !important; }
   .hero-badges { flex-direction: column !important; align-items: center !important; }
 }
-
-/* Blog hover effects */
-.blog-featured:hover { border-color: rgba(0,255,179,0.35) !important; transform: translateY(-2px) !important; }
-.blog-card:hover     { border-color: rgba(0,255,179,0.25) !important; transform: translateY(-3px) !important; }
-.blog-related:hover  { border-color: rgba(0,255,179,0.25) !important; }
-.blog-featured, .blog-card, .blog-related { transition: border-color 0.2s, transform 0.2s !important; }

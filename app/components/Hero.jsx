@@ -405,7 +405,7 @@ export default function Hero() {
       minHeight: '100vh', display: 'flex', flexDirection: 'column',
       alignItems: 'center', justifyContent: 'center',
       padding: '88px 5% 60px', textAlign: 'center',
-      position: 'relative', overflow: 'hidden',
+      position: 'relative', overflow: 'hidden', maxWidth: '100vw',
     }}>
       {/* Particles */}
       <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
