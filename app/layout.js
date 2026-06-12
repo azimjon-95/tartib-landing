@@ -10,7 +10,7 @@ export const metadata = {
     template: "%s | Tartib CRM",
   },
 
-  description: "O'zbekiston gilam yuvish va himchishtka sehxlari uchun #1 CRM/ERP. Buyurtmalar, GPS kuzatuv, maosh va moliya — bitta tizimda. 14 kun bepul.",
+  description: "Tartib CRM — gilam yuvish va himchistka korxonalari uchun ERP. Buyurtmalar, GPS, moliya, ishchilar va Telegram bot — bitta platformada. 14 kun bepul.",
 
   authors: [{ name: 'Tartib CRM', url: BASE_URL }],
   creator: 'Tartib CRM',
