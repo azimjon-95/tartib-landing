@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
+import Image from 'next/image'
 
 const TABS = [
   { id:'dashboard', label:'Dashboard',   icon:'◈' },
@@ -15,13 +16,15 @@ const TABS = [
 const SCREENS = {
   dashboard: {
     color:'#00FFB3',
-    title:"Bosh sahifa — to'liq ko'rinish",
-    desc:"Bugungi buyurtmalar, kirim, chiqim, ishchilar holati — hammasini bir ekranda ko'ring.",
+    title:"Bosh sahifa — real vaqt monitoring",
+    desc:"52 ta faol buyurtma, 5 680 000 so'm kirim, 8/12 ishchi — hammasini bitta ekranda ko'ring.",
+    realImage: '/images/dashboard-opt.png',
+    realImageAlt: 'Tartib CRM Dashboard — real ekran',
     kpis:[
-      {l:'Bugungi sotuv',  v:'124.5M', c:'#00FFB3'},
-      {l:'Yangi buyurtma', v:'47',     c:'#A78BFA'},
-      {l:'Yetkazishda',    v:'12',     c:'#38BDF8'},
-      {l:'Oylik foyda',    v:'48.2M',  c:'#4ADE80'},
+      {l:'Faol buyurtma', v:'52',          c:'#00FFB3'},
+      {l:'Bugungi kirim', v:'5.6M',        c:'#A78BFA'},
+      {l:'Jami balans',   v:'18.7M',       c:'#38BDF8'},
+      {l:'Ishchi',        v:'8/12',        c:'#4ADE80'},
     ],
     rows:[
       {id:'#1042',name:'Azimjon M.',  sum:'2,400,000', status:'Yuvishda',   sc:'#38BDF8'},
@@ -39,14 +42,16 @@ const SCREENS = {
       {col:'Yangi',      color:'#A78BFA', cards:['#1042 — Azimjon M.','#1048 — Nilufar A.','#1050 — Jasur T.']},
       {col:'Qabul',      color:'#38BDF8', cards:['#1041 — Bobur K.','#1047 — Sanjar']},
       {col:'Yuvishda',   color:'#FB923C', cards:['#1039 — Sardor','#1037 — Malika']},
-      {col:'Quritishda', color:'#00FFB3', cards:['#1035 — Jasur']},
+      {col:"Quritishda", color:'#00FFB3', cards:['#1035 — Jasur']},
       {col:'Tayyor',     color:'#4ADE80', cards:['#1031 ✅','#1030 ✅','#1029 ✅']},
     ],
   },
   delivery: {
     color:'#38BDF8',
-    title:"Yetkazib berish — real vaqt xarita",
-    desc:"Shafyorlar O'zbekiston bo'ylab harakatlanadi. Har shahar va tumanda real vaqt kuzatuv.",
+    title:"Shofyorlaringiz nazorat ostida",
+    desc:"Olib ketish, yetkazib berish, jonli xarita — shofyorlarni biriktirish va buyurtma holatini kuzatish.",
+    realImage: '/images/transport-opt.jpg',
+    realImageAlt: 'Tartib CRM Transport — GPS kuzatuv',
     drivers:[
       {name:'Sardor M.',  order:'#1042', status:"Yo'lda",    color:'#00FFB3', pct:65},
       {name:'Javlon K.',  order:'#1034', status:'Yetkazdi',  color:'#4ADE80', pct:100},
@@ -62,7 +67,7 @@ const SCREENS = {
       {l:'Kirim',   v:'48.2M', c:'#4ADE80', pct:85},
       {l:'Chiqim',  v:'12.8M', c:'#F87171', pct:28},
       {l:'Foyda',   v:'35.4M', c:'#00FFB3', pct:72},
-      {l:'Qarzdor', v:'2.3M',  c:'#FB923C', pct:12},
+      {l:'Qarzdor', v:'7.4M',  c:'#FB923C', pct:18},
     ],
   },
   staff: {
@@ -92,246 +97,194 @@ const SCREENS = {
   },
 }
 
-/* ─── Desktop: Browser mockup kontent ─── */
-function DesktopContent({ id }) {
+/* ── Desktop real image viewer ── */
+function DesktopRealImage({ src, alt, color }) {
+  return (
+    <div style={{
+      width:'100%', maxWidth:960, margin:'0 auto',
+      borderRadius:16, overflow:'hidden',
+      border:`1px solid ${color}25`,
+      boxShadow:`0 32px 80px rgba(0,0,0,0.7), 0 0 60px ${color}10`,
+      position:'relative',
+    }}>
+      {/* Browser chrome */}
+      <div style={{
+        background:'#0d1120', padding:'10px 16px',
+        display:'flex', alignItems:'center', gap:10,
+        borderBottom:'1px solid rgba(255,255,255,0.05)',
+      }}>
+        <div style={{display:'flex',gap:6,flexShrink:0}}>
+          {['#ff5f57','#febc2e','#28c840'].map(c=>(
+            <div key={c} style={{width:11,height:11,borderRadius:'50%',background:c}}/>
+          ))}
+        </div>
+        <div style={{
+          flex:1, maxWidth:360, margin:'0 auto',
+          background:'rgba(0,0,0,0.4)', borderRadius:8,
+          padding:'4px 12px', display:'flex', alignItems:'center', gap:6,
+          border:'1px solid rgba(255,255,255,0.06)',
+        }}>
+          <span style={{fontSize:10,color:'#4ADE80'}}>🔒</span>
+          <span style={{fontSize:11,color:'#556',fontFamily:'monospace'}}>app.tartibcrm.uz/dashboard</span>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:5,marginLeft:'auto'}}>
+          <div style={{width:6,height:6,borderRadius:'50%',background:color,boxShadow:`0 0 6px ${color}`,animation:'ping 1.4s infinite'}}/>
+          <span style={{fontSize:9,color,fontWeight:700}}>LIVE</span>
+        </div>
+      </div>
+      {/* Real screenshot */}
+      <div style={{position:'relative', width:'100%'}}>
+        <img
+          src={src} alt={alt}
+          style={{
+            width:'100%', height:'auto',
+            display:'block',
+            maxHeight:460,
+            objectFit:'cover',
+            objectPosition:'top',
+          }}
+          loading="lazy"
+        />
+        {/* "Haqiqiy ekran" badge */}
+        <div style={{
+          position:'absolute', top:12, right:12,
+          background:'rgba(0,0,0,0.7)', backdropFilter:'blur(8px)',
+          border:`1px solid ${color}40`,
+          borderRadius:99, padding:'4px 12px',
+          fontSize:10, fontWeight:700, color,
+          display:'flex', alignItems:'center', gap:5,
+        }}>
+          <span style={{width:6,height:6,borderRadius:'50%',background:color,display:'inline-block'}}/>
+          HAQIQIY EKRAN
+        </div>
+      </div>
+    </div>
+  )
+}
+
+/* ── Desktop mock content (tabs without real image) ── */
+function DesktopMockContent({ id }) {
   const s = SCREENS[id]
-  if (!s) return null
   const sideItems = TABS
 
   return (
-    <div style={{ display:'flex', height:'100%', fontSize:12 }}>
-      {/* Sidebar */}
-      <div style={{ width:180, background:'#050810', borderRight:'1px solid rgba(0,255,179,0.08)', display:'flex', flexDirection:'column', flexShrink:0 }}>
-        <div style={{ padding:'16px 14px 12px', borderBottom:'1px solid rgba(0,255,179,0.06)' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <div style={{ width:28, height:28, borderRadius:7, background:'linear-gradient(135deg,#00FFB3,#A78BFA)', display:'flex', alignItems:'center', justifyContent:'center', fontWeight:900, fontSize:13, color:'#000' }}>T</div>
-            <div>
-              <div style={{ fontSize:11, fontWeight:800, color:'#fff' }}>TartibCRM</div>
-              <div style={{ fontSize:8, color:'#00FFB3', opacity:0.7 }}>Enterprise</div>
-            </div>
-          </div>
+    <div style={{
+      width:'100%', maxWidth:960, margin:'0 auto',
+      borderRadius:16, overflow:'hidden',
+      border:`1px solid ${s.color}25`,
+      boxShadow:`0 32px 80px rgba(0,0,0,0.6)`,
+    }}>
+      <div style={{background:'#0d1120',padding:'10px 16px',display:'flex',alignItems:'center',gap:10,borderBottom:'1px solid rgba(255,255,255,0.05)'}}>
+        <div style={{display:'flex',gap:6,flexShrink:0}}>
+          {['#ff5f57','#febc2e','#28c840'].map(c=><div key={c} style={{width:11,height:11,borderRadius:'50%',background:c}}/>)}
         </div>
-        {sideItems.map(t => (
-          <div key={t.id} style={{ padding:'9px 14px', fontSize:11, cursor:'pointer', color: t.id===id?'#00FFB3':'#445', background: t.id===id?'rgba(0,255,179,0.07)':'transparent', borderLeft: t.id===id?'2px solid #00FFB3':'2px solid transparent', display:'flex', alignItems:'center', gap:8 }}>
-            <span style={{ fontSize:14 }}>{t.icon}</span> {t.label}
-          </div>
-        ))}
-        <div style={{ marginTop:'auto', padding:'14px', borderTop:'1px solid rgba(0,255,179,0.06)' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:6 }}>
-            <div style={{ width:6, height:6, borderRadius:'50%', background:'#4ADE80', boxShadow:'0 0 5px #4ADE80', animation:'pulse 2s infinite' }}/>
-            <span style={{ fontSize:9, color:'#4ADE80' }}>99.9% online</span>
-          </div>
+        <div style={{flex:1,maxWidth:360,margin:'0 auto',background:'rgba(0,0,0,0.4)',borderRadius:8,padding:'4px 12px',display:'flex',alignItems:'center',gap:6,border:'1px solid rgba(255,255,255,0.06)'}}>
+          <span style={{fontSize:10,color:'#4ADE80'}}>🔒</span>
+          <span style={{fontSize:11,color:'#556',fontFamily:'monospace'}}>app.tartibcrm.uz/{id}</span>
+        </div>
+        <div style={{display:'flex',alignItems:'center',gap:5,marginLeft:'auto'}}>
+          <div style={{width:6,height:6,borderRadius:'50%',background:s.color,animation:'ping 1.4s infinite'}}/>
+          <span style={{fontSize:9,color:s.color,fontWeight:700}}>LIVE</span>
         </div>
       </div>
-
-      {/* Main area */}
-      <div style={{ flex:1, background:'#070b14', overflow:'hidden', display:'flex', flexDirection:'column' }}>
-        {/* Top bar */}
-        <div style={{ height:44, borderBottom:'1px solid rgba(255,255,255,0.04)', display:'flex', alignItems:'center', padding:'0 20px', justifyContent:'space-between', flexShrink:0 }}>
-          <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-            <span style={{ fontSize:13, fontWeight:700, color:'#f1f5f9' }}>{s.title}</span>
-          </div>
-          <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:5 }}>
-              <div style={{ width:6, height:6, borderRadius:'50%', background:'#00FFB3', animation:'ping 1.4s infinite' }}/>
-              <span style={{ fontSize:9, color:'#00FFB3', fontWeight:700 }}>LIVE</span>
+      <div style={{display:'flex',height:380,fontSize:12}}>
+        {/* Sidebar */}
+        <div style={{width:160,background:'#050810',borderRight:'1px solid rgba(0,255,179,0.08)',display:'flex',flexDirection:'column',flexShrink:0}}>
+          <div style={{padding:'12px 10px 10px',borderBottom:'1px solid rgba(0,255,179,0.06)'}}>
+            <div style={{display:'flex',alignItems:'center',gap:7}}>
+              <div style={{width:24,height:24,borderRadius:6,background:'linear-gradient(135deg,#00FFB3,#A78BFA)',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:900,fontSize:12,color:'#000'}}>T</div>
+              <div style={{fontSize:11,fontWeight:800,color:'#fff'}}>TartibCRM</div>
             </div>
-            <div style={{ width:28, height:28, borderRadius:'50%', background:'rgba(0,255,179,0.1)', border:'1px solid rgba(0,255,179,0.2)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11, color:'#00FFB3', fontWeight:800 }}>A</div>
           </div>
+          {sideItems.map(t=>(
+            <div key={t.id} style={{padding:'8px 10px',fontSize:10,cursor:'pointer',color:t.id===id?s.color:'#445',background:t.id===id?`rgba(${id==='dashboard'?'0,255,179':'167,139,250'},0.07)`:'transparent',borderLeft:t.id===id?`2px solid ${s.color}`:'2px solid transparent',display:'flex',alignItems:'center',gap:7}}>
+              <span style={{fontSize:13}}>{t.icon}</span> {t.label}
+            </div>
+          ))}
         </div>
-
         {/* Content */}
-        <div style={{ flex:1, padding:'18px 20px', overflow:'hidden' }}>
-          {id === 'dashboard' && (
-            <div>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12, marginBottom:18 }}>
-                {s.kpis.map(k => (
-                  <div key={k.l} style={{ background:`${k.c}0d`, border:`1px solid ${k.c}20`, borderRadius:12, padding:'14px 16px' }}>
-                    <div style={{ fontSize:22, fontWeight:900, color:k.c, fontFamily:'monospace', letterSpacing:'-1px' }}>{k.v}</div>
-                    <div style={{ fontSize:10, color:'#556', marginTop:4 }}>{k.l}</div>
-                    <div style={{ fontSize:9, color:'#4ADE80', marginTop:3 }}>↑ +12%</div>
+        <div style={{flex:1,background:'#070b14',overflow:'hidden',padding:'16px'}}>
+          {id==='orders' && s.kanban && (
+            <div style={{display:'flex',gap:8,height:'100%'}}>
+              {s.kanban.map(col=>(
+                <div key={col.col} style={{flex:1,background:'rgba(255,255,255,0.02)',borderRadius:10,padding:'8px 6px',border:`1px solid ${col.color}15`}}>
+                  <div style={{display:'flex',alignItems:'center',gap:4,marginBottom:6}}>
+                    <div style={{width:6,height:6,borderRadius:'50%',background:col.color}}/>
+                    <span style={{fontSize:8,fontWeight:800,color:col.color,textTransform:'uppercase'}}>{col.col}</span>
                   </div>
-                ))}
-              </div>
-              <div style={{ display:'grid', gridTemplateColumns:'1.6fr 1fr', gap:12 }}>
-                <div style={{ background:'#0d1120', borderRadius:12, padding:'14px 16px', border:'1px solid rgba(0,255,179,0.06)' }}>
-                  <div style={{ fontSize:11, color:'#556', marginBottom:12, fontWeight:700 }}>So'nggi buyurtmalar</div>
-                  {s.rows.map(r => (
-                    <div key={r.id} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'8px 0', borderBottom:'1px solid rgba(255,255,255,0.03)' }}>
-                      <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                        <div style={{ width:6, height:6, borderRadius:'50%', background:r.sc, flexShrink:0 }}/>
-                        <div>
-                          <div style={{ fontSize:12, fontWeight:600, color:'#e2e8f0' }}>{r.name}</div>
-                          <div style={{ fontSize:9, color:'#445' }}>{r.id}</div>
-                        </div>
-                      </div>
-                      <div style={{ textAlign:'right' }}>
-                        <div style={{ fontSize:11, color:'#00FFB3', fontFamily:'monospace' }}>{r.sum}</div>
-                        <div style={{ fontSize:9, color:r.sc, fontWeight:700 }}>{r.status}</div>
-                      </div>
-                    </div>
+                  {col.cards.map(c=>(
+                    <div key={c} style={{background:'rgba(15,25,45,0.95)',borderRadius:7,padding:'6px 7px',marginBottom:5,borderLeft:`2px solid ${col.color}`,fontSize:8,color:'#94a3b8'}}>{c}</div>
                   ))}
                 </div>
-                <div style={{ background:'#0d1120', borderRadius:12, padding:'14px 16px', border:'1px solid rgba(0,255,179,0.06)' }}>
-                  <div style={{ fontSize:11, color:'#556', marginBottom:12, fontWeight:700 }}>Oylik sotuv</div>
-                  <div style={{ display:'flex', alignItems:'flex-end', gap:4, height:100 }}>
-                    {[42,58,51,73,65,88,79,95,87,112,108,134].map((v,i) => (
-                      <div key={i} style={{ flex:1, height:`${(v/134)*90}px`, background: i===11?'linear-gradient(180deg,#00FFB3,#00cc8e)':'rgba(0,255,179,0.12)', borderRadius:'2px 2px 0 0', minWidth:4 }}/>
-                    ))}
-                  </div>
-                  <div style={{ display:'flex', justifyContent:'space-between', marginTop:6, fontSize:8, color:'#334' }}>
-                    <span>Yan</span><span>Apr</span><span>Iyl</span><span>Okt</span><span>Dek</span>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
           )}
-
-          {id === 'orders' && (
+          {id==='finance' && s.items && (
             <div>
-              <div style={{ display:'flex', gap:10, height:240 }}>
-                {s.kanban.map(col => (
-                  <div key={col.col} style={{ flex:1, background:'rgba(255,255,255,0.02)', borderRadius:12, padding:'10px 8px', border:`1px solid ${col.color}15` }}>
-                    <div style={{ display:'flex', alignItems:'center', gap:5, marginBottom:8 }}>
-                      <div style={{ width:6, height:6, borderRadius:'50%', background:col.color }}/>
-                      <span style={{ fontSize:9, fontWeight:800, color:col.color, textTransform:'uppercase' }}>{col.col}</span>
-                      <span style={{ marginLeft:'auto', fontSize:9, color:'#334', background:'rgba(255,255,255,0.04)', borderRadius:99, padding:'1px 6px' }}>{col.cards.length}</span>
-                    </div>
-                    {col.cards.map(c => (
-                      <div key={c} style={{ background:'rgba(15,25,45,0.95)', borderRadius:8, padding:'7px 8px', marginBottom:6, borderLeft:`2px solid ${col.color}`, fontSize:9, color:'#94a3b8' }}>{c}</div>
-                    ))}
+              <div style={{display:'grid',gridTemplateColumns:'repeat(2,1fr)',gap:10,marginBottom:12}}>
+                {[['↑ 48.2M','Kirim','#4ADE80'],['↓ 12.8M','Chiqim','#F87171'],['= 35.4M','Foyda','#00FFB3'],['⚠ 7.4M','Qarzdor','#FB923C']].map(([v,l,c])=>(
+                  <div key={l} style={{background:`${c}0d`,border:`1px solid ${c}20`,borderRadius:10,padding:'10px 12px'}}>
+                    <div style={{fontSize:16,fontWeight:900,color:c,fontFamily:'monospace'}}>{v}</div>
+                    <div style={{fontSize:9,color:'#556',marginTop:3}}>{l}</div>
                   </div>
                 ))}
               </div>
-            </div>
-          )}
-
-          {id === 'delivery' && (
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
-              <div style={{ background:'#0d1120', borderRadius:12, padding:'14px 16px', border:'1px solid rgba(0,255,179,0.06)' }}>
-                <div style={{ fontSize:11, color:'#556', marginBottom:14, fontWeight:700 }}>Faol shafyorlar</div>
-                {s.drivers.map(d => (
-                  <div key={d.name} style={{ marginBottom:14 }}>
-                    <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6 }}>
-                      <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                        <div style={{ width:30, height:30, borderRadius:'50%', background:`${d.color}18`, border:`1px solid ${d.color}40`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:14 }}>🚗</div>
-                        <div>
-                          <div style={{ fontSize:12, fontWeight:700, color:'#f1f5f9' }}>{d.name}</div>
-                          <div style={{ fontSize:9, color:'#445' }}>{d.order}</div>
-                        </div>
-                      </div>
-                      <div style={{ fontSize:10, color:d.color, fontWeight:700, alignSelf:'center' }}>{d.status}</div>
-                    </div>
-                    <div style={{ height:4, background:'rgba(255,255,255,0.05)', borderRadius:99, overflow:'hidden' }}>
-                      <div style={{ width:`${d.pct}%`, height:'100%', background:`linear-gradient(90deg,${d.color},${d.color}88)`, borderRadius:99 }}/>
-                    </div>
+              {s.items.map(item=>(
+                <div key={item.l} style={{marginBottom:10}}>
+                  <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
+                    <span style={{fontSize:10,color:'#888'}}>{item.l}</span>
+                    <span style={{fontSize:11,fontWeight:800,color:item.c,fontFamily:'monospace'}}>{item.v}</span>
                   </div>
-                ))}
-              </div>
-              <div style={{ background:'#0d1120', borderRadius:12, border:'1px solid rgba(0,255,179,0.06)', display:'flex', alignItems:'center', justifyContent:'center' }}>
-                <div style={{ textAlign:'center' }}>
-                  <div style={{ fontSize:40, marginBottom:8 }}>🗺</div>
-                  <div style={{ fontSize:11, color:'#00FFB3', fontWeight:700 }}>Real vaqt GPS</div>
-                  <div style={{ fontSize:10, color:'#445', marginTop:4 }}>4 shafyor online</div>
-                  <div style={{ display:'flex', gap:6, justifyContent:'center', marginTop:12 }}>
-                    {['#00FFB3','#4ADE80','#A78BFA','#38BDF8'].map(c => (
-                      <div key={c} style={{ width:8, height:8, borderRadius:'50%', background:c, boxShadow:`0 0 5px ${c}`, animation:'pulse 2s infinite' }}/>
-                    ))}
+                  <div style={{height:5,background:'rgba(255,255,255,0.05)',borderRadius:99,overflow:'hidden'}}>
+                    <div style={{width:`${item.pct}%`,height:'100%',background:`linear-gradient(90deg,${item.c},${item.c}88)`,borderRadius:99}}/>
                   </div>
                 </div>
-              </div>
+              ))}
             </div>
           )}
-
-          {id === 'finance' && (
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
-              <div>
-                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:12 }}>
-                  {[['↑ 48.2M','Kirim','#4ADE80'],['↓ 12.8M','Chiqim','#F87171'],['= 35.4M','Foyda','#00FFB3'],['⚠ 2.3M','Qarzdor','#FB923C']].map(([v,l,c]) => (
-                    <div key={l} style={{ background:`${c}0d`, border:`1px solid ${c}20`, borderRadius:12, padding:'12px 14px' }}>
-                      <div style={{ fontSize:18, fontWeight:900, color:c, fontFamily:'monospace' }}>{v}</div>
-                      <div style={{ fontSize:9, color:'#556', marginTop:3 }}>{l}</div>
-                    </div>
-                  ))}
-                </div>
-                <div style={{ background:'#0d1120', borderRadius:12, padding:'14px 16px', border:'1px solid rgba(0,255,179,0.06)' }}>
-                  <div style={{ fontSize:11, color:'#556', fontWeight:700, marginBottom:12 }}>Oylik tahlil</div>
-                  {s.items.map(item => (
-                    <div key={item.l} style={{ marginBottom:12 }}>
-                      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:5 }}>
-                        <span style={{ fontSize:11, color:'#888' }}>{item.l}</span>
-                        <span style={{ fontSize:12, fontWeight:800, color:item.c, fontFamily:'monospace' }}>{item.v} so'm</span>
-                      </div>
-                      <div style={{ height:6, background:'rgba(255,255,255,0.05)', borderRadius:99, overflow:'hidden' }}>
-                        <div style={{ width:`${item.pct}%`, height:'100%', background:`linear-gradient(90deg,${item.c},${item.c}77)`, borderRadius:99 }}/>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              <div style={{ background:'#0d1120', borderRadius:12, padding:'14px 16px', border:'1px solid rgba(0,255,179,0.06)' }}>
-                <div style={{ fontSize:11, color:'#556', fontWeight:700, marginBottom:12 }}>Qarzdor mijozlar</div>
-                {[['Azimjon M.','250,000','#F87171'],['Malika T.','180,000','#FB923C'],['Bobur K.','90,000','#F87171'],['Sardor U.','60,000','#FB923C'],['Dilnoza Y.','45,000','#F87171']].map(([n,v,c]) => (
-                  <div key={n} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'8px 0', borderBottom:'1px solid rgba(255,255,255,0.03)' }}>
-                    <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                      <div style={{ width:26, height:26, borderRadius:'50%', background:'rgba(255,255,255,0.05)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:11 }}>👤</div>
-                      <span style={{ fontSize:12, color:'#ccc' }}>{n}</span>
-                    </div>
-                    <span style={{ fontSize:11, color:c, fontWeight:700, fontFamily:'monospace' }}>{v} so'm</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {id === 'staff' && (
+          {id==='staff' && s.workers && (
             <div>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:14 }}>
-                {[['12','Jami xodim','#00FFB3'],['8/12','Bugun aktiv','#38BDF8'],['4.8M','Oylik fond','#A78BFA']].map(([v,l,c]) => (
-                  <div key={l} style={{ background:`${c}0d`, border:`1px solid ${c}20`, borderRadius:12, padding:'12px 14px' }}>
-                    <div style={{ fontSize:22, fontWeight:900, color:c, fontFamily:'monospace' }}>{v}</div>
-                    <div style={{ fontSize:9, color:'#556', marginTop:4 }}>{l}</div>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:8,marginBottom:12}}>
+                {[['12','Jami xodim','#00FFB3'],['8/12','Bugun aktiv','#38BDF8'],['4.8M','Oylik fond','#A78BFA']].map(([v,l,c])=>(
+                  <div key={l} style={{background:`${c}0d`,border:`1px solid ${c}20`,borderRadius:10,padding:'10px 12px'}}>
+                    <div style={{fontSize:18,fontWeight:900,color:c,fontFamily:'monospace'}}>{v}</div>
+                    <div style={{fontSize:9,color:'#556',marginTop:3}}>{l}</div>
                   </div>
                 ))}
               </div>
-              <div style={{ background:'#0d1120', borderRadius:12, border:'1px solid rgba(0,255,179,0.06)', overflow:'hidden' }}>
-                <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', padding:'8px 16px', borderBottom:'1px solid rgba(255,255,255,0.04)', fontSize:9, color:'#445', fontWeight:700, textTransform:'uppercase', letterSpacing:1 }}>
-                  <span>Xodim</span><span>Rol</span><span>Kv.m</span><span>Maosh</span>
-                </div>
-                {s.workers.map(w => (
-                  <div key={w.name} style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr 1fr', padding:'10px 16px', borderBottom:'1px solid rgba(255,255,255,0.03)', alignItems:'center' }}>
-                    <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                      <div style={{ width:28, height:28, borderRadius:'50%', background:`${w.color}18`, border:`1px solid ${w.color}30`, display:'flex', alignItems:'center', justifyContent:'center', fontSize:12 }}>👤</div>
-                      <span style={{ fontSize:12, fontWeight:600, color:'#f1f5f9' }}>{w.name}</span>
+              <div style={{background:'#0d1120',borderRadius:10,border:'1px solid rgba(0,255,179,0.06)',overflow:'hidden'}}>
+                {s.workers.map(w=>(
+                  <div key={w.name} style={{display:'grid',gridTemplateColumns:'2fr 1fr 1fr 1fr',padding:'8px 12px',borderBottom:'1px solid rgba(255,255,255,0.03)',alignItems:'center'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:7}}>
+                      <div style={{width:22,height:22,borderRadius:'50%',background:`${w.color}18`,border:`1px solid ${w.color}30`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:11}}>👤</div>
+                      <span style={{fontSize:11,fontWeight:600,color:'#f1f5f9'}}>{w.name}</span>
                     </div>
-                    <span style={{ fontSize:10, color:'#667' }}>{w.role}</span>
-                    <span style={{ fontSize:11, color:'#94a3b8', fontFamily:'monospace' }}>{w.kvm}</span>
-                    <span style={{ fontSize:11, color:'#00FFB3', fontFamily:'monospace', fontWeight:700 }}>{w.salary}</span>
+                    <span style={{fontSize:9,color:'#667'}}>{w.role}</span>
+                    <span style={{fontSize:10,color:'#94a3b8',fontFamily:'monospace'}}>{w.kvm}</span>
+                    <span style={{fontSize:10,color:'#00FFB3',fontFamily:'monospace',fontWeight:700}}>{w.salary}</span>
                   </div>
                 ))}
               </div>
             </div>
           )}
-
-          {id === 'settings' && (
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
-              <div style={{ background:'#0d1120', borderRadius:12, padding:'14px 16px', border:'1px solid rgba(0,255,179,0.06)' }}>
-                <div style={{ fontSize:11, color:'#556', fontWeight:700, marginBottom:12 }}>Integratsiyalar</div>
-                {s.opts.map(o => (
-                  <div key={o.label} style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 12px', borderRadius:10, marginBottom:6, background:'rgba(255,255,255,0.02)', border:'1px solid rgba(255,255,255,0.04)' }}>
-                    <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-                      <span style={{ fontSize:18 }}>{o.icon}</span>
-                      <span style={{ fontSize:12, color:'#888' }}>{o.label}</span>
+          {id==='settings' && s.opts && (
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10}}>
+              <div style={{background:'#0d1120',borderRadius:10,padding:'12px',border:'1px solid rgba(0,255,179,0.06)'}}>
+                {s.opts.map(o=>(
+                  <div key={o.label} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 10px',borderRadius:8,marginBottom:5,background:'rgba(255,255,255,0.02)'}}>
+                    <div style={{display:'flex',alignItems:'center',gap:8}}>
+                      <span style={{fontSize:15}}>{o.icon}</span>
+                      <span style={{fontSize:10,color:'#888'}}>{o.label}</span>
                     </div>
-                    <span style={{ fontSize:11, color:o.c, fontWeight:700 }}>{o.val}</span>
+                    <span style={{fontSize:10,color:o.c,fontWeight:700}}>{o.val}</span>
                   </div>
                 ))}
               </div>
-              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                {[['Foydalanuvchilar','7 ta','#38BDF8'],['Backup','Kunlik','#4ADE80'],['SSL','Faol','#4ADE80'],['2FA','Yoqilgan','#4ADE80']].map(([l,v,c])=>(
-                  <div key={l} style={{ background:`${c}08`, border:`1px solid ${c}18`, borderRadius:12, padding:'14px 16px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                    <span style={{ fontSize:12, color:'#888' }}>{l}</span>
-                    <span style={{ fontSize:13, fontWeight:800, color:c }}>{v}</span>
+              <div style={{display:'flex',flexDirection:'column',gap:8}}>
+                {[['Foydalanuvchi','7 ta','#38BDF8'],['Backup','Kunlik','#4ADE80'],['SSL','Faol','#4ADE80'],['2FA','Yoqilgan','#4ADE80']].map(([l,v,c])=>(
+                  <div key={l} style={{background:`${c}08`,border:`1px solid ${c}18`,borderRadius:10,padding:'12px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                    <span style={{fontSize:10,color:'#888'}}>{l}</span>
+                    <span style={{fontSize:12,fontWeight:800,color:c}}>{v}</span>
                   </div>
                 ))}
               </div>
@@ -343,38 +296,35 @@ function DesktopContent({ id }) {
   )
 }
 
-/* ─── Mobile: Phone frame kontent ─── */
+/* ── Mobile content ── */
 function MobileContent({ id }) {
   const s = SCREENS[id]
   if (!s) return null
 
-  if (id === 'dashboard') return (
-    <div style={{padding:'12px'}}>
-      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:8,marginBottom:12}}>
-        {s.kpis.map(k=>(
-          <div key={k.l} style={{background:`${k.c}0d`,border:`1px solid ${k.c}20`,borderRadius:10,padding:'10px 12px'}}>
-            <div style={{fontSize:17,fontWeight:900,color:k.c,fontFamily:'monospace'}}>{k.v}</div>
-            <div style={{fontSize:9,color:'#555',marginTop:2}}>{k.l}</div>
-          </div>
-        ))}
-      </div>
-      <div style={{fontSize:10,color:'#555',marginBottom:8,fontWeight:600}}>So'nggi buyurtmalar</div>
-      {s.rows.slice(0,4).map(r=>(
-        <div key={r.id} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'7px 0',borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
-          <div>
-            <div style={{fontSize:12,fontWeight:600,color:'#f1f5f9'}}>{r.name}</div>
-            <div style={{fontSize:9,color:'#555'}}>{r.id}</div>
-          </div>
-          <div style={{textAlign:'right'}}>
-            <div style={{fontSize:11,color:'#00FFB3',fontFamily:'monospace'}}>{r.sum}</div>
-            <div style={{fontSize:9,color:r.sc,fontWeight:600}}>{r.status}</div>
-          </div>
+  // Real image tabs — mobile da to'liq ko'rinadi
+  if (s.realImage) {
+    return (
+      <div style={{position:'relative'}}>
+        <img
+          src={s.realImage} alt={s.realImageAlt}
+          style={{width:'100%',height:'auto',display:'block'}}
+          loading="lazy"
+        />
+        <div style={{
+          position:'absolute',top:10,right:10,
+          background:'rgba(0,0,0,0.75)',backdropFilter:'blur(6px)',
+          border:`1px solid ${s.color}40`,borderRadius:99,
+          padding:'3px 10px',fontSize:9,fontWeight:700,color:s.color,
+          display:'flex',alignItems:'center',gap:4,
+        }}>
+          <span style={{width:5,height:5,borderRadius:'50%',background:s.color,display:'inline-block'}}/>
+          HAQIQIY EKRAN
         </div>
-      ))}
-    </div>
-  )
+      </div>
+    )
+  }
 
-  if (id === 'orders') return (
+  if (id==='orders') return (
     <div style={{padding:'12px',overflowX:'auto'}}>
       <div style={{display:'flex',gap:7,minWidth:380}}>
         {s.kanban.map(col=>(
@@ -391,30 +341,7 @@ function MobileContent({ id }) {
       </div>
     </div>
   )
-
-  if (id === 'delivery') return (
-    <div style={{padding:'12px'}}>
-      {s.drivers.map(d=>(
-        <div key={d.name} style={{marginBottom:11}}>
-          <div style={{display:'flex',justifyContent:'space-between',marginBottom:4}}>
-            <div style={{display:'flex',alignItems:'center',gap:7}}>
-              <div style={{width:26,height:26,borderRadius:'50%',background:`${d.color}18`,border:`1px solid ${d.color}40`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13}}>🚗</div>
-              <div>
-                <div style={{fontSize:11,fontWeight:700,color:'#f1f5f9'}}>{d.name}</div>
-                <div style={{fontSize:9,color:'#555'}}>{d.order}</div>
-              </div>
-            </div>
-            <div style={{fontSize:9,color:d.color,fontWeight:700,alignSelf:'center'}}>{d.status}</div>
-          </div>
-          <div style={{height:3,background:'rgba(255,255,255,0.06)',borderRadius:99,overflow:'hidden'}}>
-            <div style={{width:`${d.pct}%`,height:'100%',background:`linear-gradient(90deg,${d.color},${d.color}88)`,borderRadius:99}}/>
-          </div>
-        </div>
-      ))}
-    </div>
-  )
-
-  if (id === 'finance') return (
+  if (id==='finance') return (
     <div style={{padding:'12px'}}>
       {s.items.map(item=>(
         <div key={item.l} style={{marginBottom:12}}>
@@ -429,8 +356,7 @@ function MobileContent({ id }) {
       ))}
     </div>
   )
-
-  if (id === 'staff') return (
+  if (id==='staff') return (
     <div style={{padding:'12px'}}>
       {s.workers.map(w=>(
         <div key={w.name} style={{display:'flex',gap:9,alignItems:'center',padding:'7px 0',borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
@@ -444,8 +370,7 @@ function MobileContent({ id }) {
       ))}
     </div>
   )
-
-  if (id === 'settings') return (
+  if (id==='settings') return (
     <div style={{padding:'12px'}}>
       {s.opts.map(o=>(
         <div key={o.label} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'8px 10px',borderRadius:9,marginBottom:5,background:'rgba(255,255,255,0.02)',border:'1px solid rgba(255,255,255,0.04)'}}>
@@ -458,7 +383,6 @@ function MobileContent({ id }) {
       ))}
     </div>
   )
-
   return null
 }
 
@@ -468,12 +392,14 @@ export default function Screenshots() {
   const [ref, inView] = useInView({ triggerOnce:true, threshold:0.05 })
   const s = SCREENS[active]
 
-  useEffect(() => {
+  useEffect(()=>{
     const check = () => setIsMobile(window.innerWidth <= 768)
     check()
     window.addEventListener('resize', check)
     return () => window.removeEventListener('resize', check)
-  }, [])
+  },[])
+
+  const hasRealImage = !!s.realImage
 
   return (
     <section id="screenshots" aria-labelledby="screenshots-heading"
@@ -493,100 +419,86 @@ export default function Screenshots() {
               mo'ljallangan
             </span>
           </h2>
+          <p style={{fontSize:isMobile?13:15,color:'#556',maxWidth:480,margin:'0 auto',lineHeight:1.65}}>
+            Dashboard va transport — haqiqiy ekranlar. Ko'rganingiz — ishlayotgan tizim.
+          </p>
         </motion.div>
 
         {/* Tabs */}
-        <div style={{display:'flex',gap:8,marginBottom:28,overflowX:'auto',WebkitOverflowScrolling:'touch',paddingBottom:4,scrollbarWidth:'none',justifyContent: isMobile?'flex-start':'center'}}>
+        <div style={{display:'flex',gap:8,marginBottom:28,overflowX:'auto',WebkitOverflowScrolling:'touch',paddingBottom:4,scrollbarWidth:'none',justifyContent:isMobile?'flex-start':'center'}}>
           {TABS.map(t=>(
             <motion.button key={t.id} onClick={()=>setActive(t.id)}
               whileTap={{scale:0.94}}
               style={{
                 display:'flex',alignItems:'center',gap:7,
-                padding: isMobile?'8px 14px':'10px 20px',
+                padding:isMobile?'8px 14px':'10px 20px',
                 borderRadius:12,
                 background:active===t.id?`${SCREENS[t.id].color}14`:'rgba(255,255,255,0.03)',
                 border:`1px solid ${active===t.id?SCREENS[t.id].color+'50':'rgba(255,255,255,0.06)'}`,
                 color:active===t.id?SCREENS[t.id].color:'#555',
                 cursor:'pointer',fontFamily:'inherit',
-                fontSize: isMobile?12:13,
+                fontSize:isMobile?12:13,
                 fontWeight:active===t.id?700:500,
                 whiteSpace:'nowrap',flexShrink:0,
                 transition:'all 0.2s',
+                position:'relative',
               }}>
               <span>{t.icon}</span>
               <span>{t.label}</span>
+              {/* "REAL" badge for tabs with real images */}
+              {SCREENS[t.id].realImage && (
+                <span style={{
+                  fontSize:7,fontWeight:800,padding:'1px 5px',
+                  borderRadius:4,background:SCREENS[t.id].color,
+                  color:'#000',letterSpacing:0.5,
+                }}>REAL</span>
+              )}
             </motion.button>
           ))}
           <style>{`div::-webkit-scrollbar{display:none}`}</style>
         </div>
 
-        {/* Preview area */}
+        {/* Preview */}
         <AnimatePresence mode="wait">
           <motion.div key={active}
-            initial={{opacity:0,y:16,scale:0.99}}
+            initial={{opacity:0,y:12,scale:0.99}}
             animate={{opacity:1,y:0,scale:1}}
             exit={{opacity:0,y:-12,scale:0.99}}
-            transition={{duration:0.3}}>
+            transition={{duration:0.25}}>
 
             {/* Description */}
-            <div style={{textAlign:'center',marginBottom:24,maxWidth:600,margin:'0 auto 24px'}}>
-              <div style={{fontSize:isMobile?14:17,fontWeight:800,color:'#f1f5f9',marginBottom:6,letterSpacing:'-0.3px'}}>{s.title}</div>
+            <div style={{textAlign:'center',marginBottom:24,maxWidth:640,margin:'0 auto 24px'}}>
+              <div style={{
+                fontSize:isMobile?14:17,fontWeight:800,color:'#f1f5f9',
+                marginBottom:6,letterSpacing:'-0.3px',
+                display:'flex',alignItems:'center',justifyContent:'center',gap:8,flexWrap:'wrap',
+              }}>
+                {s.title}
+                {hasRealImage && (
+                  <span style={{fontSize:10,fontWeight:700,padding:'2px 8px',borderRadius:6,background:`${s.color}15`,color:s.color,border:`1px solid ${s.color}30`}}>
+                    ✦ Haqiqiy ekran
+                  </span>
+                )}
+              </div>
               <div style={{fontSize:isMobile?12:14,color:'#556',lineHeight:1.65}}>{s.desc}</div>
             </div>
 
-            {/* ── DESKTOP: Browser/Laptop mockup ── */}
+            {/* ── DESKTOP ── */}
             {!isMobile && (
-              <div style={{
-                width:'100%', maxWidth:960, margin:'0 auto', className:'browser-mockup',
-                borderRadius:16, overflow:'hidden',
-                border:'1px solid rgba(0,255,179,0.12)',
-                boxShadow:`0 32px 80px rgba(0,0,0,0.6), 0 0 60px ${s.color}08`,
-              }}>
-                {/* Browser chrome bar */}
-                <div style={{
-                  background:'#0d1120', padding:'10px 16px',
-                  display:'flex', alignItems:'center', gap:10,
-                  borderBottom:'1px solid rgba(255,255,255,0.05)',
-                }}>
-                  {/* Traffic lights */}
-                  <div style={{display:'flex',gap:6,flexShrink:0}}>
-                    {['#ff5f57','#febc2e','#28c840'].map(c=>(
-                      <div key={c} style={{width:11,height:11,borderRadius:'50%',background:c}}/>
-                    ))}
-                  </div>
-                  {/* URL bar */}
-                  <div style={{
-                    flex:1, maxWidth:360, margin:'0 auto',
-                    background:'rgba(0,0,0,0.4)', borderRadius:8,
-                    padding:'4px 12px', display:'flex', alignItems:'center', gap:6,
-                    border:'1px solid rgba(255,255,255,0.06)',
-                  }}>
-                    <span style={{fontSize:10,color:'#4ADE80'}}>🔒</span>
-                    <span style={{fontSize:11,color:'#556',fontFamily:'monospace'}}>app.tartibcrm.uz/dashboard</span>
-                  </div>
-                  {/* Live badge */}
-                  <div style={{display:'flex',alignItems:'center',gap:5,marginLeft:'auto'}}>
-                    <div style={{width:6,height:6,borderRadius:'50%',background:'#00FFB3',animation:'ping 1.4s infinite'}}/>
-                    <span style={{fontSize:9,color:'#00FFB3',fontWeight:700}}>LIVE</span>
-                  </div>
-                </div>
-                {/* App content */}
-                <div style={{height:400, overflow:'hidden'}}>
-                  <DesktopContent id={active} />
-                </div>
-              </div>
+              hasRealImage
+                ? <DesktopRealImage src={s.realImage} alt={s.realImageAlt} color={s.color}/>
+                : <DesktopMockContent id={active}/>
             )}
 
-            {/* ── MOBILE: Phone frame ── */}
+            {/* ── MOBILE ── */}
             {isMobile && (
               <div style={{
-                width:'100%', maxWidth:360, margin:'0 auto',
-                background:'#0d1120', borderRadius:22,
+                width:'100%',maxWidth:380,margin:'0 auto',
+                background:'#0d1120',borderRadius:22,
                 overflow:'hidden',
-                border:'1px solid rgba(0,255,179,0.12)',
-                boxShadow:`0 20px 60px rgba(0,0,0,0.5), 0 0 40px ${s.color}10`,
+                border:`1px solid ${s.color}18`,
+                boxShadow:`0 20px 60px rgba(0,0,0,0.5)`,
               }}>
-                {/* Phone top bar */}
                 <div style={{background:'#080c18',padding:'9px 14px 7px',display:'flex',alignItems:'center',justifyContent:'space-between',borderBottom:'1px solid rgba(255,255,255,0.04)'}}>
                   <div style={{display:'flex',alignItems:'center',gap:7}}>
                     <div style={{width:20,height:20,borderRadius:5,background:'linear-gradient(135deg,#00FFB3,#A78BFA)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:10,fontWeight:900,color:'#000'}}>T</div>
@@ -597,8 +509,7 @@ export default function Screenshots() {
                     <span style={{fontSize:9,color:'#4ADE80',fontWeight:700}}>LIVE</span>
                   </div>
                 </div>
-                <div style={{minHeight:240}}><MobileContent id={active}/></div>
-                {/* Bottom nav */}
+                <div style={{minHeight:200}}><MobileContent id={active}/></div>
                 <div style={{background:'#060a14',borderTop:'1px solid rgba(255,255,255,0.04)',padding:'7px 0',display:'flex',justifyContent:'space-around'}}>
                   {TABS.slice(0,5).map(t=>(
                     <button key={t.id} onClick={()=>setActive(t.id)} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:2,padding:'3px 8px',background:'none',border:'none',cursor:'pointer',color:active===t.id?SCREENS[t.id].color:'#333',transition:'color 0.2s'}}>
@@ -612,11 +523,7 @@ export default function Screenshots() {
           </motion.div>
         </AnimatePresence>
       </div>
-
-      <style>{`
-        @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-        @keyframes ping{75%,100%{transform:scale(2.2);opacity:0}}
-      `}</style>
+      <style>{`@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}} @keyframes ping{75%,100%{transform:scale(2.2);opacity:0}}`}</style>
     </section>
   )
 }
