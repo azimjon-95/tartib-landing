@@ -459,7 +459,7 @@ export default function Hero() {
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, delay: 0.3 }}
           className="hero-cta"
           style={{ display: 'flex', gap: 12, flexWrap: 'wrap', justifyContent: 'center', marginBottom: 28, maxWidth: 420, margin: '0 auto 28px' }}>
-          <motion.a href="#demo" whileTap={{ scale: 0.96 }}
+          <motion.a href="/demo" whileTap={{ scale: 0.96 }}
             style={{ padding: '14px 28px', background: 'linear-gradient(135deg,#00FFB3,#00cc8e)', color: '#000', borderRadius: 12, fontSize: 15, fontWeight: 700, boxShadow: '0 4px 20px rgba(0,255,179,0.3)', display: 'flex', alignItems: 'center', gap: 8, textDecoration: 'none', flex: 1, justifyContent: 'center' }}>
             ⚡ Bepul demo olish
           </motion.a>

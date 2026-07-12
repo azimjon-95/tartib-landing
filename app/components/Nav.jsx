@@ -75,14 +75,14 @@ export default function Nav() {
 
         <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
           <a href="https://app.tartibcrm.uz" rel="noopener" className="nav-desk" style={{ color: '#666', fontSize: 14, textDecoration: 'none' }}>Kirish</a>
-          <motion.a href="#demo" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
+          <motion.a href="/demo" whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
             className="nav-cta-desk"
             style={{ padding: '9px 20px', background: 'linear-gradient(135deg,#00FFB3,#00cc8e)', color: '#000', borderRadius: 10, fontSize: 14, fontWeight: 700, textDecoration: 'none' }}>
             Bepul demo →
           </motion.a>
 
           {/* Mobile: demo button + hamburger */}
-          <motion.a href="#demo" whileTap={{ scale: 0.94 }}
+          <motion.a href="/demo" whileTap={{ scale: 0.94 }}
             className="nav-mob-btn"
             style={{
               display: 'none', padding: '8px 14px',
@@ -147,7 +147,7 @@ export default function Nav() {
             </div>
 
             <div style={{ padding: '20px' }}>
-              <a href="#demo" onClick={() => setMob(false)} style={{
+              <a href="/demo" onClick={() => setMob(false)} style={{
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 padding: '16px', width: '100%',
                 background: 'linear-gradient(135deg,#00FFB3,#00cc8e)',
